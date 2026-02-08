@@ -1,28 +1,46 @@
-#include <raylib.h> // Includes the raylib header
+#include <raylib.h>
 
-int main(void)
-{
-    // Initialization
-    const int screenWidth = 800;
-    const int screenHeight = 450;
-    InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window"); //
-    SetTargetFPS(60); // Set the desired frame rate
+struct Global {
+    static constexpr float VirtualWidth = 1600.0f;
+    static constexpr float VirtualHeight = 800.0f;
+    int WindowWidth = 0;
+    int WindowHeight = 0;
+    float Scale = 1.0f; // Отношение одного физического пикселя к виртуальному,
+};
 
-    // Main game loop
-    while (!WindowShouldClose())    // Detect window close button or ESC key
-    {
-        // Update game state (e.g., check for input)
-        // ...
+void Initialization(Global &g) {
+    InitWindow(800, 600, "Balling");
 
-        // Draw
-        BeginDrawing();                 // Start drawing
-        ClearBackground(RAYWHITE);      // Clear background to white color
-        DrawText("Hello, raylib!", 190, 200, 20, LIGHTGRAY); // Draw text
-        EndDrawing();                   // End drawing and swap buffers
+    int monitor = GetCurrentMonitor();
+    int monitorWidth = GetMonitorWidth(monitor);
+    int monitorHeight = GetMonitorHeight(monitor);
+
+    int supposedHeight = static_cast<int>(static_cast<float>(monitorWidth) / Global::VirtualWidth * Global::VirtualHeight);
+
+    if (supposedHeight <= monitorHeight) {
+        g.WindowWidth = monitorWidth;
+        g.WindowHeight = supposedHeight;
+    }
+    else {
+        g.WindowHeight = monitorHeight;
+        g.WindowWidth = static_cast<int>(static_cast<float>(monitorHeight) / Global::VirtualHeight * Global::VirtualWidth);
     }
 
-    // De-Initialization
-    CloseWindow();                      // Close window and OpenGL context
+    g.Scale = static_cast<float>(g.WindowWidth) / Global::VirtualWidth;
 
-    return 0;
+    SetWindowSize(g.WindowWidth, g.WindowHeight);
+    SetWindowPosition(0, 0);
+    SetTargetFPS(144);
+}
+
+int main() {
+    Global global;
+    Initialization(global);
+    while (!WindowShouldClose()) {
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+        DrawText("Hello, raylib!", 190, 200, 20, LIGHTGRAY);
+        EndDrawing();
+    }
+    CloseWindow();
 }
