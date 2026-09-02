@@ -10,6 +10,9 @@ add_executable(Balling main.cpp
         Global.h
         Constants.h
         WindowHelper.h
-        WindowHelper.cpp)
+        WindowHelper.cpp
+        Player.h
+        PlayerHelper.cpp
+        PlayerHelper.h)
 
 target_link_libraries(Balling PRIVATE raylib asio)

@@ -1,9 +1,9 @@
+#pragma once
+
 //
 // Created by sroma on 23.05.2026.
 //
 
-#ifndef BALLING_WINDOWHELPER_H
-#define BALLING_WINDOWHELPER_H
 #include <utility>
 
 struct Global;
@@ -19,5 +19,3 @@ void setScaleForCurrentWindowSize(Global &global);
 
 // Инициализация настроек окна и глобального объекта
 void initialize(Global &g);
-
-#endif //BALLING_WINDOWHELPER_H
